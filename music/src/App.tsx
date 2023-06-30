@@ -18,11 +18,11 @@ const App: FC = () => {
       page_count: 1,
       total: 1,
       data: [
-        {
-          key: 'abc',
-          uuid: 'xxxxxxxxxxxxxxxx',
-          value: 'xbv'
-        }
+        // {
+        //   key: 'abc',
+        //   uuid: 'xxxxxxxxxxxxxxxx',
+        //   value: 'xbv'
+        // }
       ],
     });
   },[]);

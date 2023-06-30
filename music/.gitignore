@@ -11,6 +11,9 @@
 # production
 /build
 
+/public/main.js
+/public/preload.js
+
 # misc
 .DS_Store
 .env.local

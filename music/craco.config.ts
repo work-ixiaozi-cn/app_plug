@@ -2,20 +2,17 @@ import WindiCSSWebpackPlugin from 'windicss-webpack-plugin';
 import {BaseContext as WebpackContext, CracoConfig } from '@craco/types'
 import {Configuration as WebpackConfig} from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import path, { dirname } from 'path';
-import {overrideWebpackDevConfig} from "@craco/craco/dist/lib/cra";
-import {WebpackConfigOverride} from "@craco/types/dist/plugins";
+import path from "path";
 
-let options = {}
-// @ts-ignore
 const config: CracoConfig = {
   webpack: {
     configure: (webpackConfig: WebpackConfig, {env, paths}: WebpackContext) => {
       return {
         ...webpackConfig,
-        entry:{
-          renderer: path.join(__dirname, 'src/index.tsx'),
-          // main: path.join(__dirname, 'src/main/index.ts'),
+        entry: path.join(__dirname, 'src/index.tsx'),
+        output:{
+          ...webpackConfig.output,
+          filename: `static/js/renderer${env === 'production' ? '' : '.[contenthash:8]'}.js`,
         },
         resolve:{
           ...webpackConfig.resolve,
@@ -24,13 +21,12 @@ const config: CracoConfig = {
             crypto: require.resolve("crypto-browserify"),
             stream: require.resolve("stream-browserify"),
             buffer: require.resolve("buffer"),
+            "path": false,
           }
         },
-        // plugins: [
-        //   new WindiCSSWebpackPlugin({
-        //     virtualModulePath: 'src',
-        //   }),
-        // ]
+        // plugins: webpackConfig.plugins?.filter(plugin => plugin instanceof HtmlWebpackPlugin
+        //     ? new HtmlWebpackPlugin({...plugin.userOptions, chunks: ['renderer']})
+        //     : plugin)
       }
     },
     plugins: {
@@ -38,55 +34,12 @@ const config: CracoConfig = {
         new WindiCSSWebpackPlugin({
           virtualModulePath: 'src',
         }),
-        // new HtmlWebpackPlugin(options)
       ],
+      remove: [
+          'WebpackManifestPlugin'
+      ]
     }
   },
-  // plugins: [
-  //   {
-  //     plugin: {
-  //       // @ts-ignore
-  //       overrideWebpackConfig: (webpackConfigOverride: WebpackConfigOverride) => {
-  //         let plugin = new HtmlWebpackPlugin(
-  //             Object.assign(
-  //                 {},
-  //                 {
-  //                   inject: true,
-  //                   chunks: ['renderer'],
-  //                   template: webpackConfigOverride.context.paths?.appHtml,
-  //                 },
-  //                 webpackConfigOverride.context.env === 'production'
-  //                     ? {
-  //                       minify: {
-  //                         removeComments: true,
-  //                         collapseWhitespace: true,
-  //                         removeRedundantAttributes: true,
-  //                         useShortDoctype: true,
-  //                         removeEmptyAttributes: true,
-  //                         removeStyleLinkTypeAttributes: true,
-  //                         keepClosingSlash: true,
-  //                         minifyJS: true,
-  //                         minifyCSS: true,
-  //                         minifyURLs: true,
-  //                       },
-  //                     }
-  //                     : undefined
-  //             )
-  //         );
-  //         return {
-  //           ...webpackConfigOverride.webpackConfig,
-  //           plugins: [
-  //             plugin,
-  //             ...(webpackConfigOverride.webpackConfig.plugins? webpackConfigOverride.webpackConfig.plugins : []),
-  //             new WindiCSSWebpackPlugin({
-  //               virtualModulePath: 'src',
-  //             }),
-  //           ]
-  //         }
-  //       },
-  //     }
-  //   }
-  // ],
   devServer: {
     port: 3002
   }

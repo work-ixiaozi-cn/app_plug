@@ -1,5 +1,5 @@
 {
-  "name": "openai",
+  "name": "music",
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
@@ -15,6 +15,9 @@
     "antd": "^5.6.1",
     "braft-editor": "^2.3.9",
     "braft-extensions": "^0.1.1",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "electron": "^25.2.0",
     "lowdb": "^6.0.1",
     "music-api": "^0.3.11",
     "rc-virtual-list": "^3.5.2",
@@ -22,13 +25,16 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.0",
     "react-scripts": "5.0.1",
+    "stream-browserify": "^3.0.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "npm run main && npm run preload && craco start --config craco.config.ts",
+    "build": "npm run main && npm run preload && craco build --config craco.main.config.ts",
+    "main": "craco build --config craco.main.config.ts",
+    "preload": "craco build --config craco.preload.config.ts",
+    "test": "craco test",
     "pack": "asar p ./dist tools.asar",
     "eject": "react-scripts eject"
   },
