@@ -12,7 +12,9 @@
 /build
 
 /public/main.js
+/public/main.js.map
 /public/preload.js
+/public/preload.js.map
 
 # misc
 .DS_Store
